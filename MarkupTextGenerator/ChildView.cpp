@@ -20,6 +20,8 @@
 #define ID_BUT_FOREGROUND    1309
 #define ID_BUT_BACKGROUND    1310
 #define ID_CBOX_FFAMILY      1311
+#define ID_EDIT_TEXTBLOCK    1312
+#define ID_BUT_COPY          1313
 
 CChildView::CChildView()
 {
@@ -42,14 +44,16 @@ CChildView::~CChildView()
 }
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
+	ON_WM_COPY()
 	ON_WM_PAINT()
 	ON_WM_CREATE()
 	ON_WM_CTLCOLOR()
+	ON_WM_SIZE()
 	ON_COMMAND(ID_BUT_FOREGROUND, OnButtonForeground)
 	ON_COMMAND(ID_BUT_BACKGROUND, OnButtonBackground)
 	ON_COMMAND(ID_CHBOX_ITALIC, OnChBoxItalic)
 	ON_COMMAND(ID_CHBOX_BOLD, OnChBoxBold)
-	//ON_COMMAND(ID_CBOX_FFAMILY, OnCBoxFFamily)
+	ON_COMMAND(ID_BUT_COPY, OnButtonCopy)
 	ON_EN_CHANGE(ID_EDIT_TEXT, OnChangeText)
 	ON_EN_CHANGE(ID_EDIT_SIZE, OnChangeSize)
 	ON_COMMAND_RANGE(ID_RADBUT_NOLINE, ID_RADBUT_UND, OnRadioButton)
@@ -150,6 +154,14 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		m_wndCBoxFontFamily.InsertString(i, fontNames[i]);
 	}
 	m_wndCBoxFontFamily.SetCurSel(0);
+
+	m_wndEditTextBlock.Create(WS_VISIBLE | WS_CHILD | ES_MULTILINE | WS_TABSTOP | WS_BORDER | ES_READONLY,
+		CRect(10, 340, 600, 450), this, ID_EDIT_TEXTBLOCK);
+
+	str.LoadString(IDS_BUT_COPY);
+	m_wndButCopy.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+		CRect(620, 380, 820, 410), this, ID_BUT_COPY);
+
 	return 0;
 }
 
@@ -184,6 +196,7 @@ void CChildView::OnButtonForeground()
 		m_pTextAttributes->m_clrForeground = foreground;
 		m_wndOutputWindow.AttributesChanged();
 	}
+	GenerateText();
 }
 
 void CChildView::OnButtonBackground()
@@ -194,6 +207,7 @@ void CChildView::OnButtonBackground()
 		m_pTextAttributes->m_clrBackground = background;
 		m_wndOutputWindow.AttributesChanged();
 	}
+	GenerateText();
 }
 
 COLORREF CChildView::GetColor()
@@ -209,24 +223,28 @@ void CChildView::OnChangeText()
 {
 	m_wndEditText.GetWindowText(m_pTextAttributes->m_strText);
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
 void CChildView::OnChangeSize()
 {
 	m_wndEditSize.GetWindowText(m_pTextAttributes->m_strSize);
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
 void CChildView::OnChBoxItalic()
 {
 	m_pTextAttributes->m_bItalic = m_wndChBoxItalic.GetCheck();
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
 void CChildView::OnChBoxBold()
 {
 	m_pTextAttributes->m_bBold = m_wndChBoxBold.GetCheck();
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
 void CChildView::OnRadioButton(UINT nID)
@@ -244,11 +262,50 @@ void CChildView::OnRadioButton(UINT nID)
 		break;
 	}
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
 void CChildView::OnCBoxFFamily()
 {
 	m_wndCBoxFontFamily.GetLBText(m_wndCBoxFontFamily.GetCurSel(), m_pTextAttributes->m_strFontFamily);
 	m_wndOutputWindow.AttributesChanged();
+	GenerateText();
 }
 
+void CChildView::OnSize(UINT nType, int cx, int cy)
+{
+	if (m_pTextAttributes != nullptr)
+		m_wndOutputWindow.AttributesChanged();
+}
+
+void CChildView::GenerateText()
+{
+	CString strFWeight = m_pTextAttributes->m_bBold ? L" FontWeight=\"Bold\"" : L"";
+	CString strFStyle = m_pTextAttributes->m_bItalic ? L" FontStyle=\"Italic\"" : L"";
+	CString strTextDecorations;
+	if (m_pTextAttributes->m_nLineState == TEXT_STRIKE_THROUGH)
+		strTextDecorations = L" TextDecorations=\"StrikeThrough\"";
+	else if (m_pTextAttributes->m_nLineState == TEXT_UNDERLINE)
+		strTextDecorations = L" TextDecorations=\"Underline\"";
+	else 
+		strTextDecorations = L"";
+
+	CString TextBlock;
+	TextBlock.Format(L"<TextBlock%s%s FontFamily=\"%s\" FontSize=\"%s\"%s Background=\"#%.2X%.2X%.2X\" Foreground=\"#%.2X%.2X%.2X\">%s</TextBlock>", 
+		strFStyle, strFWeight, m_pTextAttributes->m_strFontFamily, m_pTextAttributes->m_strSize, strTextDecorations, 
+		GetRValue(m_pTextAttributes->m_clrForeground), GetGValue(m_pTextAttributes->m_clrForeground), GetBValue(m_pTextAttributes->m_clrForeground),
+		GetRValue(m_pTextAttributes->m_clrBackground), GetGValue(m_pTextAttributes->m_clrBackground), GetBValue(m_pTextAttributes->m_clrBackground),
+		m_pTextAttributes->m_strText);
+	m_wndEditTextBlock.SetWindowText(TextBlock);	
+}
+
+void CChildView::OnCopy()
+{
+	m_wndEditTextBlock.SetSel(0, -1);
+	m_wndEditTextBlock.Copy();
+}
+
+void CChildView::OnButtonCopy()
+{
+	OnCopy();
+}

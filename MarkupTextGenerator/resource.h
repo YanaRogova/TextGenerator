@@ -15,6 +15,7 @@
 #define IDS_BUT_FOREGROUND              61211
 #define IDS_BUT_BACKGROUND              61212
 #define IDS_CBOX_FFAMILY                61213
+#define IDS_BUT_COPY                    61214
 
 // Next default values for new objects
 // 

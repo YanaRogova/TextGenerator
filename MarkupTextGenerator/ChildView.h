@@ -9,8 +9,8 @@ public:
 
 protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-	COLORREF CChildView::GetColor();
+	COLORREF GetColor();
+	void GenerateText();
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -24,6 +24,9 @@ protected:
 	afx_msg void OnRadioButton(UINT nID);
 	afx_msg void OnCBoxFFamily();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnCopy();
+	afx_msg void OnButtonCopy();
 	DECLARE_MESSAGE_MAP()
 	
 protected:
@@ -33,6 +36,7 @@ protected:
 	CStatic        m_wndStaticSize;
 	CEdit          m_wndEditText;
 	CEdit          m_wndEditSize;
+	CEdit          m_wndEditTextBlock;
 	CButton        m_wndChBoxItalic;
 	CButton        m_wndChBoxBold;
 	CButton        m_wndRadUnderline;
@@ -40,6 +44,7 @@ protected:
 	CButton        m_wndRadNoLine;
 	CButton        m_wndButForeground;
 	CButton        m_wndButBackground;
+	CButton        m_wndButCopy;
 	CComboBox      m_wndCBoxFontFamily;
 
 	TextAttributes* m_pTextAttributes;

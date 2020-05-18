@@ -2,13 +2,16 @@
 #include "OutputWindow.h"
 
 BEGIN_MESSAGE_MAP(COutputWindow, CStatic)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-
+COutputWindow::COutputWindow()
+{
+	m_pTextAttributes = nullptr;
+}
 
 void COutputWindow::AttributesChanged()
 {
-
 	ChangeFont();
 	CDC* pDC = GetDC();
 	CRect rect;
@@ -20,7 +23,6 @@ void COutputWindow::AttributesChanged()
 	pDC->SetTextColor(m_pTextAttributes->m_clrForeground);
 	pDC->SetBkColor(m_pTextAttributes->m_clrBackground);
 	pDC->DrawText(m_pTextAttributes->m_strText, rect, DT_CENTER | DT_WORDBREAK);
-
 }
 
 void COutputWindow::ChangeFont()
@@ -50,4 +52,10 @@ void COutputWindow::ChangeFont()
 void COutputWindow::SetTextAttributes(TextAttributes* textAttributes)
 {
 	m_pTextAttributes = textAttributes;
+}
+
+void COutputWindow::OnSize(UINT nType, int cx, int cy)
+{
+	if(m_pTextAttributes != nullptr)
+		AttributesChanged();
 }
