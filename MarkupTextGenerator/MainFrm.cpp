@@ -47,11 +47,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+	cs.style = WS_BORDER | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 	cs.lpszClass = AfxRegisterWndClass(0);
+
+	RECT WndRect;
+	WndRect.top = 0;
+	WndRect.left = 0;
+	WndRect.bottom = 465;
+	WndRect.right = 830;
+	AdjustWindowRectEx(&WndRect, cs.style, TRUE, cs.dwExStyle);
+	cs.cx = WndRect.right - WndRect.left;
+	cs.cy = WndRect.bottom - WndRect.top;
+
 	return TRUE;
 }
 
