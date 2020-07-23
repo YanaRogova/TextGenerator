@@ -79,52 +79,52 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	
+
 	m_wndOutputWindow.Create(L"", WS_VISIBLE | WS_CHILD | WS_TABSTOP | WS_BORDER,
 		CRect(10, 10, 600, 300), this, ID_OUTPUT_WINDOW);
 
 	m_wndOutputWindow.SetTextAttributes(m_pTextAttributes);
-	
+
 	CString str;
 	str.LoadString(IDS_STATIC_TEXT);
 	m_wndStaticText.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP,
-		CRect(620, 0, 720, 20), this, ID_STATIC);
+		CRect(620, 0, 820, 20), this, ID_STATIC);
 
 	m_wndEditText.Create(WS_VISIBLE | WS_CHILD | ES_MULTILINE | WS_TABSTOP | WS_BORDER,
-		CRect(620, 20, 820, 100), this, ID_EDIT_TEXT);
+		CRect(620, 20, 820, 90), this, ID_EDIT_TEXT);
 
 
 	str.LoadString(IDS_STATIC_SIZE);
 	m_wndStaticSize.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP,
-		CRect(620, 105, 720, 125), this, ID_STATIC);
+		CRect(620, 105, 760, 125), this, ID_STATIC);
 
 	m_wndEditSize.Create(WS_VISIBLE | WS_CHILD | ES_NUMBER | WS_TABSTOP | WS_BORDER,
-		CRect(725, 102, 820, 122), this, ID_EDIT_SIZE);
-	
+		CRect(760, 102, 820, 126), this, ID_EDIT_SIZE);
+
 
 	str.LoadString(IDS_CHBOX_ITALIC);
 	m_wndChBoxItalic.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX,
-		CRect(620, 130, 780, 150), this, ID_CHBOX_ITALIC);
+		CRect(620, 130, 820, 150), this, ID_CHBOX_ITALIC);
 
 	str.LoadString(IDS_CHBOX_BOLD);
 	m_wndChBoxBold.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX,
-		CRect(620, 155, 780, 175), this, ID_CHBOX_BOLD);
+		CRect(620, 155, 820, 175), this, ID_CHBOX_BOLD);
 
 
 	str.LoadString(IDS_RADBUT_NOLINE);
 	m_wndRadNoLine.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTORADIOBUTTON,
-		CRect(620, 180, 780, 200), this, ID_RADBUT_NOLINE);
+		CRect(620, 180, 820, 200), this, ID_RADBUT_NOLINE);
 
 	m_wndRadNoLine.SetCheck(true);
 
 	str.LoadString(IDS_RADBUT_STRIKE);
 	m_wndRadStrikeThrough.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTORADIOBUTTON,
-		CRect(620, 205, 780, 225), this, ID_RADBUT_STRIKE);
+		CRect(620, 205, 820, 225), this, ID_RADBUT_STRIKE);
 
 	str.LoadString(IDS_RADBUT_UND);
 	m_wndRadUnderline.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTORADIOBUTTON,
-		CRect(620, 230, 780, 250), this, ID_RADBUT_UND);
-	
+		CRect(620, 230, 820, 250), this, ID_RADBUT_UND);
+
 
 	str.LoadString(IDS_BUT_FOREGROUND);
 	m_wndButForeground.Create(str, WS_VISIBLE | WS_CHILD | WS_TABSTOP,
@@ -139,13 +139,13 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndCBoxFontFamily.Create(WS_VISIBLE | WS_CHILD | WS_TABSTOP | WS_VSCROLL | CBS_DROPDOWNLIST,
 		CRect(620, 305, 820, 450), this, ID_CBOX_FFAMILY);
 
-	std::vector<CString> fontNames = { L"Arial",  L"Arial Black", L"Bahnschrift", L"Calibri", L"Cambria", L"Candara", 
-		L"Comic Sans MS", L"Consolas", L"Constantia", L"Corbel", L"Courier New" , L"Ebrima", L"Franklin Gothic Medium" , 
-		L"Gabriola", L"Gadugi" , L"Georgia", L"Impact" , L"Ink Free", L"Javanese Text" , L"Lucida Console", L"Lucida Sans Unicode" , 
-		L"Malgun Gothic", L"Marlett" , L"Microsoft Himalaya", L"Microsoft JhengHei" , L"Microsoft JhengHei UI", 
-		L"Microsoft New Tai Lue" , L"Microsoft PhagsPa", L"Microsoft Sans Serif" , L"Microsoft Tai Le", L"Microsoft YaHei", 
-		L"Microsoft YaHei UI" , L"Microsoft Yi Baiti", L"Mongolian Baiti", L"MV Boli" , L"Myanmar Text", L"Nirmala UI", 
-		L"Palatino Linotype" , L"Segoe Print" , L"Segoe Script", L"Segoe UI" , L"SimSun", L"NSimSun" , L"SimSun-ExtB", L"Sitka Small", 
+	std::vector<CString> fontNames = { L"Arial",  L"Arial Black", L"Bahnschrift", L"Calibri", L"Cambria", L"Candara",
+		L"Comic Sans MS", L"Consolas", L"Constantia", L"Corbel", L"Courier New" , L"Ebrima", L"Franklin Gothic Medium" ,
+		L"Gabriola", L"Gadugi" , L"Georgia", L"Impact" , L"Ink Free", L"Javanese Text" , L"Lucida Console", L"Lucida Sans Unicode" ,
+		L"Malgun Gothic", L"Marlett" , L"Microsoft Himalaya", L"Microsoft JhengHei" , L"Microsoft JhengHei UI",
+		L"Microsoft New Tai Lue" , L"Microsoft PhagsPa", L"Microsoft Sans Serif" , L"Microsoft Tai Le", L"Microsoft YaHei",
+		L"Microsoft YaHei UI" , L"Microsoft Yi Baiti", L"Mongolian Baiti", L"MV Boli" , L"Myanmar Text", L"Nirmala UI",
+		L"Palatino Linotype" , L"Segoe Print" , L"Segoe Script", L"Segoe UI" , L"SimSun", L"NSimSun" , L"SimSun-ExtB", L"Sitka Small",
 		L"Sitka Text", L"Sitka Subheading" , L"Sitka Heading", L"Sitka Display" , L"Sitka Banner", L"Sylfaen" , L"Symbol", L"Tahoma",
 		L"Times New Roman", L"Trebuchet MS" , L"Verdana", L"Webdings" , L"Wingdings", L"Yu Gothic" , L"Yu Gothic UI" };
 
